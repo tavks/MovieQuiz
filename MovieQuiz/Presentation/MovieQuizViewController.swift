@@ -4,30 +4,31 @@ final class MovieQuizViewController: UIViewController {
     @IBOutlet private weak var counterLabel: UILabel!
     @IBOutlet private weak var textLabel: UILabel!
     @IBOutlet private weak var imageView: UIImageView!
+    @IBOutlet private weak var noButton: UIButton!
+    @IBOutlet private weak var yesButton: UIButton!
     private var currentQuestionIndex = 0
     private var correctAnswers = 0
     
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupImageViewBorders()
         let nextQuestion = convert(model: questions[currentQuestionIndex])
         show(quiz: nextQuestion)
     }
     
-    @IBAction private func noButtonClicked(_ sender: UIButton) {
-        let givenAnswer = false
-        let correctAnswer = questions[currentQuestionIndex].correctAnswer
-        showAnswerResult(isCorrect: givenAnswer == correctAnswer)
-        let nextQuestion = convert(model: questions[currentQuestionIndex])
-        show(quiz: nextQuestion)
+    private func setupImageViewBorders() {
+        imageView.layer.masksToBounds = true
+        imageView.layer.borderWidth = 8
+        imageView.layer.borderColor = UIColor.clear.cgColor
+        imageView.layer.cornerRadius = 20
     }
     
-    @IBAction private func yesButtonClicked(_ sender: UIButton) {
-        let givenAnswer = true
-        let correctAnswer = questions[currentQuestionIndex].correctAnswer
-        showAnswerResult(isCorrect: givenAnswer == correctAnswer)
-        let nextQuestion = convert(model: questions[currentQuestionIndex])
-        show(quiz: nextQuestion)
+    private func switchButtonState(isEnabled: Bool) {
+        yesButton.isEnabled = isEnabled
+        noButton.isEnabled = isEnabled
+        yesButton.alpha = isEnabled ? 1.0 : 0.5
+        noButton.alpha = isEnabled ? 1.0 : 0.5
     }
     
     private func convert(model: QuizQuestion) -> QuizStepViewModel {
@@ -57,7 +58,7 @@ final class MovieQuizViewController: UIViewController {
         }
         
         alert.addAction(action)
-        self.present(alert, animated: true, completion: nil)
+        present(alert, animated: true, completion: nil)
     }
     
     private func showAnswerResult(isCorrect: Bool) {
@@ -66,15 +67,11 @@ final class MovieQuizViewController: UIViewController {
         }
         
         let borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
-        imageView.layer.masksToBounds = true
-        imageView.layer.borderWidth = 8
         imageView.layer.borderColor = borderColor
-        imageView.layer.cornerRadius = 6
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+            self.switchButtonState(isEnabled: true)
             self.showNextQuestionOrResults()
-            // Remove border if next question or results is shown
-            self.imageView.layer.borderWidth = 0
             self.imageView.layer.borderColor = UIColor.clear.cgColor
         }
     }
@@ -92,6 +89,20 @@ final class MovieQuizViewController: UIViewController {
             show(quiz: viewModel)
         }
     }
+    
+    private func handleAnswer(givenAnswer: Bool) {
+        switchButtonState(isEnabled: false)
+        let correctAnswer = questions[currentQuestionIndex].correctAnswer
+        showAnswerResult(isCorrect: givenAnswer == correctAnswer)
+    }
+    
+    @IBAction private func noButtonClicked(_ sender: UIButton) {
+        handleAnswer(givenAnswer: false)
+    }
+    
+    @IBAction private func yesButtonClicked(_ sender: UIButton) {
+        handleAnswer(givenAnswer: true)
+    }
 }
 
 private struct QuizQuestion {
@@ -101,15 +112,15 @@ private struct QuizQuestion {
 }
 
 private struct QuizStepViewModel {
-  let image: UIImage
-  let question: String
-  let questionNumber: String
+    let image: UIImage
+    let question: String
+    let questionNumber: String
 }
 
 private struct QuizResultsViewModel {
-  let title: String
-  let text: String
-  let buttonText: String
+    let title: String
+    let text: String
+    let buttonText: String
 }
 
 private let questions: [QuizQuestion] = [
