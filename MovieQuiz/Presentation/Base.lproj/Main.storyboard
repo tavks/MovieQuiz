@@ -9,10 +9,10 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
-        <array key="YS Display-Bold.ttf">
+        <array key="YSDisplay-Bold.ttf">
             <string>YSDisplay-Bold</string>
         </array>
-        <array key="YS Display-Medium.ttf">
+        <array key="YSDisplay-Medium.ttf">
             <string>YSDisplay-Medium</string>
         </array>
     </customFonts>
@@ -119,10 +119,14 @@
                                 </subviews>
                                 <color key="backgroundColor" name="YP Black"/>
                             </view>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="14I-LJ-W8l">
+                                <rect key="frame" x="191" y="427" width="20" height="20"/>
+                            </activityIndicatorView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstItem="14I-LJ-W8l" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="7bH-9Z-UfW"/>
                             <constraint firstItem="v6e-Mi-jLQ" firstAttribute="trailing" secondItem="8bC-Xf-vdC" secondAttribute="trailing" id="DHz-Fs-rHh"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="top" secondItem="i77-rv-ztz" secondAttribute="top" constant="10" id="FpN-g2-2aS"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="i77-rv-ztz" secondAttribute="trailing" constant="20" id="GpD-3o-LfA"/>
@@ -131,9 +135,11 @@
                             <constraint firstItem="v6e-Mi-jLQ" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="Zos-hc-wzT"/>
                             <constraint firstItem="v6e-Mi-jLQ" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="gom-bc-oWD"/>
                             <constraint firstAttribute="bottom" secondItem="v6e-Mi-jLQ" secondAttribute="bottom" id="jMq-B7-QpB"/>
+                            <constraint firstItem="14I-LJ-W8l" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="vSc-AS-vQo"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="activityIndicator" destination="14I-LJ-W8l" id="xlK-MD-rLS"/>
                         <outlet property="counterLabel" destination="eBM-WX-jjK" id="sRO-ue-deI"/>
                         <outlet property="imageView" destination="5I5-9i-sfi" id="xLf-yT-Wrm"/>
                         <outlet property="noButton" destination="8gZ-Ud-QtF" id="lyG-AP-3a3"/>
