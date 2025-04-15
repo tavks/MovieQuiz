@@ -18,6 +18,7 @@ final class ResultAlertPresenter {
         }
         
         alert.addAction(action)
+        alert.view.accessibilityIdentifier = "Game results"
         
         delegate?.present(alert, animated: true)
     }
