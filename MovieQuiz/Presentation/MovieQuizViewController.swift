@@ -23,6 +23,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
         resultAlertPresenter.delegate = self
         showLoadingIndicator()
         questionFactory?.loadData()
+        activityIndicator.hidesWhenStopped = true
     }
     
     // MARK: - QuestionFactoryDelegate
@@ -35,7 +36,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     }
     
     func didLoadDataFromServer() {
-        activityIndicator.isHidden = true
+        activityIndicator.stopAnimating()
         questionFactory?.requestNextQuestion()
     }
     
@@ -115,7 +116,9 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
             })
         } else {
             currentQuestionIndex += 1
+            activityIndicator.startAnimating()
             questionFactory?.requestNextQuestion()
+            activityIndicator.stopAnimating()
         }
     }
 
@@ -135,26 +138,25 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate {
     }
     
     private func showLoadingIndicator() {
-        activityIndicator.isHidden = false
         activityIndicator.color = .ypBlack
         activityIndicator.startAnimating()
     }
     
     private func hideLoadingIndicator() {
-        activityIndicator.isHidden = true
+        activityIndicator.stopAnimating()
     }
     
     private func showNetworkError(message: String) {
         hideLoadingIndicator()
         
         let alert = UIAlertController(
-            title: "Ошибка",
-            message: "Ошибка загрузки данных",
+            title: "Что-то пошло не так(",
+            message: "Невозможно загрузить данные",
             preferredStyle: .alert
         )
         
         let action = UIAlertAction(
-            title: "Попробовать ещё раз",
+            title: "Попробовать еще раз",
             style: .default
         ) {_ in
             self.showLoadingIndicator()
